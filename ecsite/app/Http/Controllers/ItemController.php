@@ -10,9 +10,18 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    //関数の中にRequest $requestが無いとUndefined variable $request
+    public function index(Request $request)
     {
-        $items = Item::paginate(15);
+         // リクエストパラメータにkeywordが入っていたら検索機能を動かす
+        if($request->has('keyword')) {
+            // SQLのlike句でitemテーブルを検索する
+            $items = Item::where('name', 'like', '%'.$request->get('keyword').'%')->paginate(15);
+        }
+        else {
+            $items = Item::paginate(15);
+        }
         return view('item/index', ['items' => $items]);
     }
 

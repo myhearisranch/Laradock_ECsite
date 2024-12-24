@@ -7,6 +7,12 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <form method="GET" action="/">
+            <!-- name="keyword" : 入力した値をkeywordに入れ、コントローラに渡す -->
+            <input type="text"   name="keyword">
+            <input type="submit" value="商品検索">
+        </form>
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
