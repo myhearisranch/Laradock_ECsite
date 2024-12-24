@@ -2,14 +2,19 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['auth']], function() {
+    #Laravel8以降ではコントロールを呼び出す際に「完全修飾クラス名」を使用
+    #Route::get('/', 'ItemController@index');だと"ItemController" does not exist が発生
+    Route::get('/', [ItemController::class, 'index']);
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+     })->middleware(['auth', 'verified'])->name('dashboard'); 
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
