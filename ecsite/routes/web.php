@@ -11,8 +11,8 @@ Route::group(['middleware' => ['auth']], function() {
     #Route::get('/', 'ItemController@index');だと"ItemController" does not exist が発生
     Route::get('/', [ItemController::class, 'index']);
     Route::get('/item/{item}', [ItemController::class, 'show']);
+    Route::get('/cartitem', [CartItemController::class, 'index']);
     Route::post('/cartitem', [CartItemController::class, 'store']);
-
     Route::get('/dashboard', function () {
         return view('dashboard');
      })->middleware(['auth', 'verified'])->name('dashboard'); 

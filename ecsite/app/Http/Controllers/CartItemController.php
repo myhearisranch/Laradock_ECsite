@@ -11,10 +11,28 @@ class CartItemController extends Controller
     /**
      * Display a listing of the resource.
      */
+    //カート内の商品データを読み込んで、ビューに渡す処理をする
     public function index()
     {
-        //
-    }
+        //cart_itemsテーブルからデータを取得するクエリを作成。selectメソッドを使って取得したいカラムを指定
+        $cartitems = CartItem::select('cart_items.*', 'items.name', 'items.amount')
+            //user_idが現在ログインしているユーザーのIDが一致するレコードを取得する
+            ->where('user_id', Auth::id())
+            //cart_itemsテーブルとitemsテーブルを結合
+            //cart_items テーブルと items テーブルが item_id と id で結びつけられ、商品の情報（name と amount）が一緒に取得できる。
+            ->join('items', 'items.id', '=', 'cart_items.item_id')
+            //指定した条件に合致する cart_items と items の情報をすべて取得する
+            ->get();
+       
+        $subtotal = 0;
+
+        //検索結果を一つずつ取り出して処理を行う
+        foreach($cartitems as $cartitem){
+            $subtotal += $cartitem->amount * $cartitem->quantity;
+        }
+
+        return view('cartitem/index', ['cartitems' => $cartitems, 'subtotal' => $subtotal]);
+    } 
 
     /**
      * Show the form for creating a new resource.
