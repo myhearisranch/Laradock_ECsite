@@ -93,7 +93,9 @@ class CartItemController extends Controller
      */
     public function update(Request $request, CartItem $cartItem)
     {
-        //
+        $cartItem->quantity = $request->post('quantity');
+        $cartItem->save();
+        return redirect('cartitem')->with('flash_message', 'カートを更新しました');
     }
 
     /**
@@ -101,6 +103,17 @@ class CartItemController extends Controller
      */
     public function destroy(CartItem $cartItem)
     {
-        //
+    
+    //CartItem $cartItem: ルートから送信されたIDが自動的にCartItemモデルにてデータを取得する    
+
+    // エラーは発生してないがデータが削除されていない:
+    // そもそもcartItemにデータが入っているのか確認
+    // if (!$cartItem->exists) {
+    //     return redirect('cartitem')->with('flash_message', 'CartItemが見つかりません。');
+    // }
+
+    $cartItem->delete();
+    return redirect('cartitem')->with('flash_message', 'カートから削除しました');
+
     }
 }

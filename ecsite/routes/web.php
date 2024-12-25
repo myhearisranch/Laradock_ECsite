@@ -13,6 +13,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/item/{item}', [ItemController::class, 'show']);
     Route::get('/cartitem', [CartItemController::class, 'index']);
     Route::post('/cartitem', [CartItemController::class, 'store']);
+
+    //{cartItem}はURLパラメータとして、フォームで指定されたcartItem->idが渡される
+    //cart/index.blade.phpのcartitem->idが何かしらの数字が入り、それが渡される
+    //cartitem->idの数字が{cartItem}に入る
+    Route::delete('/cartitem/{cartItem}', [CartItemController::class, 'destroy']);
+    Route::put('/cartitem/{cartItem}', [CartItemController::class,'update']);
     Route::get('/dashboard', function () {
         return view('dashboard');
      })->middleware(['auth', 'verified'])->name('dashboard'); 
