@@ -6,6 +6,9 @@ use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+//BuyクラスとMailクラスを読み込む
+use App\Mail\Buy;
+use Illuminate\Support\Facades\Mail;
 
 class BuyController extends Controller
 {
@@ -29,6 +32,8 @@ class BuyController extends Controller
     {
         //フォームからのリクエストパラメータにpostという値が含まれているか判定
         if( $request->has('post') ){
+            //MailクラスとBuyクラスを使ってメールを送信する
+            Mail::to(Auth::user()->email)->send(new Buy());
             //ログインしているユーザーが持っているカート情報を削除
             CartItem::where('user_id', Auth::id())->delete();
             return view('buy/complete');
