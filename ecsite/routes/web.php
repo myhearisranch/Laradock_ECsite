@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 #これがないとTarget class [CartItemController] does not exist.
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\BuyController;
 
 Route::group(['middleware' => ['auth']], function() {
     #Laravel8以降ではコントロールを呼び出す際に「完全修飾クラス名」を使用
@@ -19,6 +20,10 @@ Route::group(['middleware' => ['auth']], function() {
     //cartitem->idの数字が{cartItem}に入る
     Route::delete('/cartitem/{cartItem}', [CartItemController::class, 'destroy']);
     Route::put('/cartitem/{cartItem}', [CartItemController::class,'update']);
+
+    Route::get('/buy', [BuyController::class, 'index']);
+    Route::post('/buy', [BuyController::class, 'store']);
+
     Route::get('/dashboard', function () {
         return view('dashboard');
      })->middleware(['auth', 'verified'])->name('dashboard'); 
